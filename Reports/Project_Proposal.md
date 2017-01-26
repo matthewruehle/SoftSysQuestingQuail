@@ -24,14 +24,14 @@ Variation between different protocols (HTTP, TCP, FTP, UDP, …)
 
 ##Annotated Bibliography
 
-Griffiths, David, and Dawn Griffiths. Head First C. Beijing: O'Reilly, 2012. Print.
+###Griffiths, David, and Dawn Griffiths. Head First C. Beijing: O'Reilly, 2012. Print.
 
 We are using Chapter 11 (Sockets and Networking) of this textbook to learn the basics of creating web server and client programs in C. We are also getting general C knowledge from the rest of the text to facilitate our use of the language for higher purposes.
 
-Hall, Brian. "Beej's Guide to Network Programming." Beej's Guide to Network Programming. N.p., 8 June 2016. Web. 21 Jan. 2017.
+###Hall, Brian. "Beej's Guide to Network Programming." Beej's Guide to Network Programming. N.p., 8 June 2016. Web. 21 Jan. 2017.
 
-    We are using this guide as a resource for networking concepts and implementation using the C socket libraries.
+We are using this guide as a resource for networking concepts and implementation using the C socket libraries.
 
-Stevens, W. Richard. UNIX Network Programming. Englewood Cliffs, NJ: Prentice Hall, 1990. Print.
+###Stevens, W. Richard. UNIX Network Programming. Englewood Cliffs, NJ: Prentice Hall, 1990. Print.
 
-    This book contains C code for a TCP server and includes an exercise for modifying the code to implement a simple HTTP server.  We plan to work through this exercise as a boilerplate for our project.
+This book contains C code for a TCP server and includes an exercise for modifying the code to implement a simple HTTP server.  We plan to work through this exercise as a boilerplate for our project.
