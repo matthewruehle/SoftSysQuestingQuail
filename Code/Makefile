@@ -7,11 +7,14 @@ error.o writen.c readline.c
 %.o: %.c
 	$(CC) $(CFLAGS) -c $<
 
-tcpcli_quails: tcpcli_quails.o ${WRAPPERS}
-	${CC} ${CFLAGS} -o $@ tcpcli_quails.o ${WRAPPERS}
+tcpclient: tcpclient.o ${WRAPPERS}
+	${CC} ${CFLAGS} -o $@ tcpclient.o ${WRAPPERS}
 
 tcpserv_quails: tcpserv_quails.o ${WRAPPERS}
 	${CC} ${CFLAGS} -o $@ tcpserv_quails.o ${WRAPPERS}
 
 clean:
-	rm *.o *~ tcpcli_quails tcpserv_quails
+	rm *.o *~ tcpclient tcpserv_quails
+
+reset:
+	make clean; make tcpclient tcpserv_quails
