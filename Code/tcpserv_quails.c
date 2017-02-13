@@ -40,12 +40,13 @@ int process_file_transfer(int connfd) {
     int remain_data = file_stat.st_size;
 
     // sending file data
+    sendfile(connfd, "", &offset, BUFSIZ); // Tries to fix Readline? Does nothing
     while (((sent_bytes = sendfile(connfd, fd, &offset, BUFSIZ)) > 0) && (remain_data > 0)) {
         fprintf(stdout, "1. Server sent %d bytes from file's data, offset is now : %d and remaining data = %d\n", sent_bytes, offset, remain_data);
         remain_data -= sent_bytes;
         fprintf(stdout, "2. Server sent %d bytes from file's data, offset is now : %d and remaining data = %d\n", sent_bytes, offset, remain_data);
     }
-
+  rewind(fd);
   close(connfd);
   return 0;
 

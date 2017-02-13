@@ -3,14 +3,11 @@
 void str_cli(FILE *fp, int sockfd)
 {
 	char	sendline[MAXLINE], recvline[MAXLINE];
-	// recvline[MAXLINE] = '\0';
 	FILE *file_p;
 
 	char file_size[256];
 	int bytes_received = 0;
 	int current_bytes = 0;
-	// file_size[255] = '\0';
-	// Writen(sockfd, "hello\0", strlen("hello\0"));
 	
 	bytes_received = Readline(sockfd, file_size, MAXLINE); // read file size
 	fprintf(stdout, "bytes_received: %i\n", bytes_received);
@@ -18,42 +15,29 @@ void str_cli(FILE *fp, int sockfd)
 
 	int f_size = atoi(file_size);
 
-	
+	file_p = Fopen("file.txt", "w");
 
-	// fprintf(stdout, "%i\n", f_size);
-	// fprintf(stdout, file_size);
-	file_p = Fopen("file.txt", "a");
-
-	bytes_received = Readline(sockfd, recvline, MAXLINE);
-	fprintf(stdout, "bytes_received: %i\n", bytes_received);
-	fprintf(stdout, "recvline: %s\n",recvline); //this shouldnt be populating the first time
-	// Readline(sockfd, recvline, MAXLINE);
-	// fprintf(stdout, recvline);
-	exit(1);
 	fprintf(stdout, "this is bytes_received: %i\n", bytes_received);
 	fprintf(stdout, "this is f_size: %i\n", f_size);
-	while (bytes_received < f_size) { // (Fgets(sendline, MAXLINE, fp) != NULL) {
 
-		
+	bytes_received = 0;
 
-		//Writen(sockfd, sendline, strlen(sendline));
+	while (bytes_received < f_size) {
 		
 		current_bytes = Readline(sockfd, recvline, MAXLINE);
-		// printf(stdout, current_bytes);
-		// fprintf(stdout, "%i\n",Readline(sockfd, recvline, MAXLINE));
+
 		if(current_bytes != 0) {
-			fprintf(stdout, "%i\n", current_bytes);
-			fprintf(stdout, "%s\n", recvline);
+			fprintf(stdout, "curr_bytes: %i\n", current_bytes);
+			fprintf(stdout, "line: %s\n", recvline);
+		} else {
+			fprintf(stdout, "%s\n", "DONE");
+			break;
 		}
-		// if (Readline(sockfd, recvline, MAXLINE) == 0)
-		// 	err_quit("str_cli: server terminated prematurely");
 
-		bytes_received = bytes_received + current_bytes;
-
-		//fprintf(stdout, recvline);
 		fprintf(file_p, "%s", recvline);
 		fprintf(stdout, "%s", recvline);
-		
+
+		bytes_received = bytes_received + current_bytes;
 
 	}
 	Fclose(file_p);
