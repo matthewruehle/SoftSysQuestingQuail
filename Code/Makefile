@@ -18,3 +18,6 @@ clean:
 
 reset:
 	make clean; make tcpclient tcpserv_quails
+
+insanity:
+	make clean; make tcpclient tcpserv_quails
