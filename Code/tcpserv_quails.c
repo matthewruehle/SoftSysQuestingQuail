@@ -9,7 +9,7 @@
 
 int process_file_transfer(int connfd) {
     int fd = open(FILE_TO_SEND, O_RDONLY);
-    char file_size[256];
+    char file_size[128];
     struct stat file_stat;
     int sent_bytes;
 
@@ -27,8 +27,9 @@ int process_file_transfer(int connfd) {
 
     socklen_t sock_len = sizeof(struct sockaddr_in); 
 
-    sprintf(file_size, "%d", file_stat.st_size);
-    ssize_t len = send(connfd, file_size, sizeof(file_size), 0);
+    sprintf(file_size, "%d\n", file_stat.st_size);
+
+    ssize_t len = send(connfd, file_size, strlen(file_size), 0);
     if (len < 0) {
         fprintf(stderr, "Error on sending greetings --> %s", strerror(errno));
         exit(EXIT_FAILURE);
@@ -46,9 +47,10 @@ int process_file_transfer(int connfd) {
         remain_data -= sent_bytes;
         fprintf(stdout, "2. Server sent %d bytes from file's data, offset is now : %d and remaining data = %d\n", sent_bytes, offset, remain_data);
     }
-  rewind(fd);
-  close(connfd);
-  return 0;
+    offset = 0;
+    fprintf(stdout, "%s\n", "We're done here.");
+    close(connfd);
+    return 0;
 
 }
 
@@ -91,6 +93,7 @@ int main(int argc, char **argv) { //why **?: array of strings
         //str_echo(connfd); //why use this function, why overwrite it instead of standard? its used to do all the parts of the server work
         //so this makes sense for readability plus the builting functionality of str_echo. additionally str_echo contains the protocol for
         // information transfer 
+        fprintf(stdout, "%s\n", "PFT runs and finishes");
 	    exit(0);
 	}
 	Close(connfd);

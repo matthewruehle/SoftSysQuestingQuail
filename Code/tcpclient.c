@@ -14,6 +14,7 @@ void str_cli(FILE *fp, int sockfd)
 	fprintf(stdout, "file_size: %s\n", file_size);
 
 	int f_size = atoi(file_size);
+	fprintf(stdout, "f_size: %i\n", f_size);
 
 	file_p = Fopen("file.txt", "w");
 
@@ -26,7 +27,7 @@ void str_cli(FILE *fp, int sockfd)
 		
 		current_bytes = Readline(sockfd, recvline, MAXLINE);
 
-		if(current_bytes != 0) {
+		if((current_bytes != 0) && (recvline != "")) {
 			fprintf(stdout, "curr_bytes: %i\n", current_bytes);
 			fprintf(stdout, "line: %s\n", recvline);
 		} else {
@@ -35,12 +36,13 @@ void str_cli(FILE *fp, int sockfd)
 		}
 
 		fprintf(file_p, "%s", recvline);
-		fprintf(stdout, "%s", recvline);
 
 		bytes_received = bytes_received + current_bytes;
 
 	}
+	current_bytes = 0;
 	Fclose(file_p);
+	fprintf(stdout, "%s\n", "We're done here.");
 }
 
 
