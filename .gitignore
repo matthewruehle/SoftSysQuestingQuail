@@ -1,2 +1,4 @@
 Code/*.o
 Code/tcpserv_quails
+Code/tcpclient
+Code/file.txt
