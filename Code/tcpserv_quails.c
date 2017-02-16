@@ -9,7 +9,7 @@
 
 int process_file_transfer(int connfd) {
     int fd = open(FILE_TO_SEND, O_RDONLY);
-    char file_size[128];
+    char file_size[256];
     struct stat file_stat;
     int sent_bytes;
 
