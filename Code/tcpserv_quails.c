@@ -6,83 +6,99 @@
 #include <stdlib.h>   // EXIT_FAILURE
 #include <string.h>
 
-#define FILE_TO_SEND "server_side.txt"
+// #define FILE_TO_SEND "server_side.txt"
 
 int process_file_transfer(int connfd) {
-    int fd = open(FILE_TO_SEND, O_RDONLY);
-    char file_size[256];
-    struct stat file_stat;
-    int sent_bytes;
     char recvline[MAXLINE];
     int bytes_received = 0;
-
-    if (fd == -1) {
-        fprintf(stderr, "Error opening file --> %s", strerror(errno));
-        exit(EXIT_FAILURE);
-    }
-
-    // get file stats
-    if (fstat(fd, &file_stat) < 0) {
-        fprintf(stderr, "Error fstat --> %s", strerror(errno));
-        exit(EXIT_FAILURE);
-    }
-    fprintf(stdout, "File Size: \n%d bytes\n", file_stat.st_size);
-
-    socklen_t sock_len = sizeof(struct sockaddr_in); 
-
-    sprintf(file_size, "%d\n", file_stat.st_size);
-
-    ssize_t len = send(connfd, file_size, strlen(file_size), 0);
-    if (len < 0) {
-        fprintf(stderr, "Error on sending greetings --> %s", strerror(errno));
-        exit(EXIT_FAILURE);
-    }
-
-    fprintf(stdout, "Server sent %d bytes for the size\n", len);
-
-    off_t offset = 0;
-    int remain_data = file_stat.st_size;
-
-    // sending file data
-    sendfile(connfd, "", &offset, BUFSIZ); // Tries to fix Readline? Does nothing
-    while (((sent_bytes = sendfile(connfd, fd, &offset, BUFSIZ)) > 0) && (remain_data > 0)) {
-        fprintf(stdout, "1. Server sent %d bytes from file's data, offset is now : %d and remaining data = %d\n", sent_bytes, offset, remain_data);
-        remain_data -= sent_bytes;
-        fprintf(stdout, "2. Server sent %d bytes from file's data, offset is now : %d and remaining data = %d\n", sent_bytes, offset, remain_data);
-    }
-    offset = 0;
-    Writen(connfd, "\n", strlen("\n"));
-    fprintf(stdout, "%s\n", "We're done here.");
-    
     while(1) {
         bytes_received = Readline(connfd, recvline, MAXLINE);
-        char req_type[3];
-        memcpy(req_type,&recvline[0],3);
-
-        char file_name[strlen(recvline)];
-        memcpy(file_name,&recvline[4],strlen(recvline)-5);
-
-        // req_type[3] = "\0";
         if (bytes_received > 0) {
-            fprintf(stdout,"%s","1\n");
+            char req_type[3];
+            memcpy(req_type,&recvline[0],3);
+
             if(strcmp("GET",req_type)==0) {
-                fprintf(stdout,"%s","2\n");
-                if(strcmp("server_side.txt",file_name)==0) {
-                    fprintf(stdout,"%s","3\n");
-                    fprintf(stdout,"%s",recvline);
-                    break;
+                fprintf(stdout,"%s","passed tests");
+                char FILE_TO_SEND[strlen(recvline)];
+                memcpy(FILE_TO_SEND,&recvline[4],strlen(recvline)-5);
+
+
+                int fd = open(FILE_TO_SEND, O_RDONLY);
+                char file_size[256];
+                struct stat file_stat;
+                int sent_bytes;
+                
+
+                if (fd == -1) {
+                    fprintf(stderr, "Error opening file --> %s", strerror(errno));
+                    Writen(connfd, "Error 404: File Not Found\n", strlen("Error 404: File Not Found\n"));
+                    exit(EXIT_FAILURE);
                 }
-                else {
-                    fprintf(stdout, "%s", "I failed");
+
+                // get file stats
+                if (fstat(fd, &file_stat) < 0) {
+                    fprintf(stderr, "Error fstat --> %s", strerror(errno));
+                    exit(EXIT_FAILURE);
                 }
-            
+                fprintf(stdout, "File Size: \n%d bytes\n", file_stat.st_size);
+
+                socklen_t sock_len = sizeof(struct sockaddr_in); 
+
+                sprintf(file_size, "%d\n", file_stat.st_size);
+
+                ssize_t len = send(connfd, file_size, strlen(file_size), 0);
+                if (len < 0) {
+                    fprintf(stderr, "Error on sending greetings --> %s", strerror(errno));
+                    exit(EXIT_FAILURE);
+                }
+
+                fprintf(stdout, "Server sent %d bytes for the size\n", len);
+
+                off_t offset = 0;
+                int remain_data = file_stat.st_size;
+
+                // sending file data
+                sendfile(connfd, "", &offset, BUFSIZ); // Tries to fix Readline? Does nothing
+                while (((sent_bytes = sendfile(connfd, fd, &offset, BUFSIZ)) > 0) && (remain_data > 0)) {
+                    fprintf(stdout, "1. Server sent %d bytes from file's data, offset is now : %d and remaining data = %d\n", sent_bytes, offset, remain_data);
+                    remain_data -= sent_bytes;
+                    fprintf(stdout, "2. Server sent %d bytes from file's data, offset is now : %d and remaining data = %d\n", sent_bytes, offset, remain_data);
+                }
+                offset = 0;
+                Writen(connfd, "\n", strlen("\n"));
+                fprintf(stdout, "%s\n", "We're done here.");
+                
+                // while(1) {
+                //     bytes_received = Readline(connfd, recvline, MAXLINE);
+                //     char req_type[3];
+                //     memcpy(req_type,&recvline[0],3);
+
+                //     char file_name[strlen(recvline)];
+                //     memcpy(file_name,&recvline[4],strlen(recvline)-5);
+
+                //     // req_type[3] = "\0";
+                //     if (bytes_received > 0) {
+                //         fprintf(stdout,"%s","1\n");
+                //         if(strcmp("GET",req_type)==0) {
+                //             fprintf(stdout,"%s","2\n");
+                //             if(strcmp("server_side.txt",file_name)==0) {
+                //                 fprintf(stdout,"%s","3\n");
+                //                 fprintf(stdout,"%s",recvline);
+                //                 break;
+                //             }
+                //             else {
+                //                 fprintf(stdout, "%s", "I failed");
+                //             }
+                        
+                //         }
+                //     }
+                // }
+                // fprintf(stdout, "%s\n", "Broke out.");
+                close(connfd);
+                return 0;
             }
         }
     }
-    fprintf(stdout, "%s\n", "Broke out.");
-    close(connfd);
-    return 0;
-
 }
 
 

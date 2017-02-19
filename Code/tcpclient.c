@@ -7,9 +7,12 @@ void str_cli(FILE *fp, int sockfd)
 
 	char file_size[256];
 	char test[] = "GET server_side.txt\n";
+	// char test[] = "GET server_text_three.txt\n"; //Bad request to test 404
 	int bytes_received = 0;
 	int current_bytes = 0;
 	
+	Writen(sockfd, test, strlen(test));
+
 	bytes_received = Readline(sockfd, file_size, MAXLINE); // read file size
 	fprintf(stdout, "bytes_received: %i\n", bytes_received);
 	fprintf(stdout, "file_size: %s\n", file_size);
@@ -24,7 +27,11 @@ void str_cli(FILE *fp, int sockfd)
 
 	bytes_received = 0;
 
+	
+
 	while (1) {
+		
+
 		if (bytes_received < f_size) {
 		// while (Fgets(sendline, MAXLINE, fp) != NULL) {
 		// while (current_bytes = Readline(sockfd, recvline, MAXLINE) != 0) {
@@ -47,8 +54,8 @@ void str_cli(FILE *fp, int sockfd)
 		}
 		else {
 			fprintf(stdout,"%s\n","read finished");
-			Writen(sockfd, test, strlen(test));
-			fprintf(stdout,"%s\n","write finished");
+			// Writen(sockfd, test, strlen(test));
+			// fprintf(stdout,"%s\n","write finished");
 			break;
 		}
 	}
