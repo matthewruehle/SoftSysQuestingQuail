@@ -12,6 +12,8 @@ int process_file_transfer(int connfd) {
     char file_size[256];
     struct stat file_stat;
     int sent_bytes;
+    char recvline[MAXLINE];
+    int bytes_received = 0;
 
     if (fd == -1) {
         fprintf(stderr, "Error opening file --> %s", strerror(errno));
@@ -48,7 +50,18 @@ int process_file_transfer(int connfd) {
         fprintf(stdout, "2. Server sent %d bytes from file's data, offset is now : %d and remaining data = %d\n", sent_bytes, offset, remain_data);
     }
     offset = 0;
+    Writen(connfd, "\n", strlen("\n"));
     fprintf(stdout, "%s\n", "We're done here.");
+    
+    while(1) {
+        bytes_received = Readline(connfd, recvline, MAXLINE);
+
+        if (bytes_received > 0) {
+            fprintf(stdout,"%s",recvline);
+            break;
+        }
+    }
+    fprintf(stdout, "%s\n", "Broke out.");
     close(connfd);
     return 0;
 

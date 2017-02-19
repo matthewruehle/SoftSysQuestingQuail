@@ -6,6 +6,7 @@ void str_cli(FILE *fp, int sockfd)
 	FILE *file_p;
 
 	char file_size[256];
+	char test[] = "message received\n";
 	int bytes_received = 0;
 	int current_bytes = 0;
 	
@@ -23,22 +24,33 @@ void str_cli(FILE *fp, int sockfd)
 
 	bytes_received = 0;
 
-	while (bytes_received < f_size) {
-		
-		current_bytes = Readline(sockfd, recvline, MAXLINE);
+	while (1) {
+		if (bytes_received < f_size) {
+		// while (Fgets(sendline, MAXLINE, fp) != NULL) {
+		// while (current_bytes = Readline(sockfd, recvline, MAXLINE) != 0) {
+			
+			// Writen(sockfd, sendline, strlen(sendline));
+				
+			current_bytes = Readline(sockfd, recvline, MAXLINE);
 
-		if((current_bytes != 0) && (recvline != "")) {
-			fprintf(stdout, "curr_bytes: %i\n", current_bytes);
-			fprintf(stdout, "line: %s\n", recvline);
-		} else {
-			fprintf(stdout, "%s\n", "DONE");
+			if((current_bytes != 0) && (recvline != "")) {
+				fprintf(stdout, "curr_bytes: %i\n", current_bytes);
+				fprintf(stdout, "line: %s\n", recvline);
+			} //else {
+			// 	fprintf(stdout, "%s\n", "DONE");
+			// 	// break;
+			// }
+
+			fprintf(file_p, "%s", recvline);
+
+			bytes_received = bytes_received + current_bytes;
+		}
+		else {
+			fprintf(stdout,"%s\n","read finished");
+			Writen(sockfd, test, strlen(test));
+			fprintf(stdout,"%s\n","write finished");
 			break;
 		}
-
-		fprintf(file_p, "%s", recvline);
-
-		bytes_received = bytes_received + current_bytes;
-
 	}
 	current_bytes = 0;
 	Fclose(file_p);
