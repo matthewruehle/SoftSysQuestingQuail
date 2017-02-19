@@ -6,7 +6,7 @@ void str_cli(FILE *fp, int sockfd)
 	FILE *file_p;
 
 	char file_size[256];
-	char test[] = "message received\n";
+	char test[] = "GET server_side.txt\n";
 	int bytes_received = 0;
 	int current_bytes = 0;
 	

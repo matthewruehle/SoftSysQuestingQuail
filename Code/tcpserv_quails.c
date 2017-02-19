@@ -4,6 +4,7 @@
 #include <unistd.h>   // fstats
 #include <sys/types.h>
 #include <stdlib.h>   // EXIT_FAILURE
+#include <string.h>
 
 #define FILE_TO_SEND "server_side.txt"
 
@@ -55,10 +56,27 @@ int process_file_transfer(int connfd) {
     
     while(1) {
         bytes_received = Readline(connfd, recvline, MAXLINE);
+        char req_type[3];
+        memcpy(req_type,&recvline[0],3);
 
+        char file_name[strlen(recvline)];
+        memcpy(file_name,&recvline[4],strlen(recvline)-5);
+
+        // req_type[3] = "\0";
         if (bytes_received > 0) {
-            fprintf(stdout,"%s",recvline);
-            break;
+            fprintf(stdout,"%s","1\n");
+            if(strcmp("GET",req_type)==0) {
+                fprintf(stdout,"%s","2\n");
+                if(strcmp("server_side.txt",file_name)==0) {
+                    fprintf(stdout,"%s","3\n");
+                    fprintf(stdout,"%s",recvline);
+                    break;
+                }
+                else {
+                    fprintf(stdout, "%s", "I failed");
+                }
+            
+            }
         }
     }
     fprintf(stdout, "%s\n", "Broke out.");
