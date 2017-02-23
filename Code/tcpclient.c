@@ -1,6 +1,6 @@
 #include	"unp.h"
 
-void str_cli(FILE *fp, int sockfd)
+void process_response(FILE *fp, int sockfd)
 {
 	char	sendline[MAXLINE], recvline[MAXLINE];
 	FILE *file_p;
@@ -30,23 +30,13 @@ void str_cli(FILE *fp, int sockfd)
 	
 
 	while (1) {
-		
-
 		if (bytes_received < f_size) {
-		// while (Fgets(sendline, MAXLINE, fp) != NULL) {
-		// while (current_bytes = Readline(sockfd, recvline, MAXLINE) != 0) {
-			
-			// Writen(sockfd, sendline, strlen(sendline));
-				
 			current_bytes = Readline(sockfd, recvline, MAXLINE);
 
 			if((current_bytes != 0) && (recvline != "")) {
 				fprintf(stdout, "curr_bytes: %i\n", current_bytes);
 				fprintf(stdout, "line: %s\n", recvline);
-			} //else {
-			// 	fprintf(stdout, "%s\n", "DONE");
-			// 	// break;
-			// }
+			}
 
 			fprintf(file_p, "%s", recvline);
 
@@ -54,35 +44,32 @@ void str_cli(FILE *fp, int sockfd)
 		}
 		else {
 			fprintf(stdout,"%s\n","read finished");
-			// Writen(sockfd, test, strlen(test));
-			// fprintf(stdout,"%s\n","write finished");
 			break;
 		}
 	}
 	current_bytes = 0;
 	Fclose(file_p);
-	fprintf(stdout, "%s\n", "We're done here.");
 }
 
 
 int main(int argc, char **argv)
 {
-    int	sockfd;
-    struct sockaddr_in servaddr;
+  int	sockfd;
+  struct sockaddr_in servaddr;
 
-    if (argc != 2)
-	err_quit("usage: tcpcli <IPaddress>");
+  if (argc != 2)
+		err_quit("usage: tcpcli <IPaddress>");
 
-    sockfd = Socket(AF_INET, SOCK_STREAM, 0);
+  sockfd = Socket(AF_INET, SOCK_STREAM, 0);
 
-    bzero(&servaddr, sizeof(servaddr));
-    servaddr.sin_family = AF_INET;
-    servaddr.sin_port = htons(SERV_PORT);
-    Inet_pton(AF_INET, argv[1], &servaddr.sin_addr);
+  bzero(&servaddr, sizeof(servaddr));
+  servaddr.sin_family = AF_INET;
+  servaddr.sin_port = htons(SERV_PORT);
+  Inet_pton(AF_INET, argv[1], &servaddr.sin_addr);
 
-    Connect(sockfd, (SA *) &servaddr, sizeof(servaddr));
+  Connect(sockfd, (SA *) &servaddr, sizeof(servaddr));
 
-    str_cli(stdin, sockfd);		/* do it all */
+  process_response(stdin, sockfd);		/* do it all */
 
-    exit(0);
+  exit(0);
 }
