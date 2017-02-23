@@ -1,12 +1,13 @@
 #include	"unp.h"
 
-void process_response(FILE *fp, int sockfd)
+void process_response(char *filename, int sockfd)
 {
 	char	sendline[MAXLINE], recvline[MAXLINE];
 	FILE *file_p;
 
 	char file_size[256];
-	char test[] = "GET server_side.txt\n";
+	char test[256];
+	sprintf(test, "GET %s\n", filename);
 	// char test[] = "GET server_text_three.txt\n"; //Bad request to test 404
 	int bytes_received = 0;
 	int current_bytes = 0;
@@ -57,8 +58,8 @@ int main(int argc, char **argv)
   int	sockfd;
   struct sockaddr_in servaddr;
 
-  if (argc != 2)
-		err_quit("usage: tcpcli <IPaddress>");
+  if (argc != 3)
+		err_quit("usage: tcpcli <IPaddress> <filename>");
 
   sockfd = Socket(AF_INET, SOCK_STREAM, 0);
 
@@ -69,7 +70,7 @@ int main(int argc, char **argv)
 
   Connect(sockfd, (SA *) &servaddr, sizeof(servaddr));
 
-  process_response(stdin, sockfd);		/* do it all */
+  process_response(argv[2], sockfd);		/* do it all */
 
   exit(0);
 }

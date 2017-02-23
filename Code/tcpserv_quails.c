@@ -6,8 +6,6 @@
 #include <stdlib.h>   // EXIT_FAILURE
 #include <string.h>
 
-// #define FILE_TO_SEND "server_side.txt"
-
 int process_file_transfer(int connfd) {
     char recvline[MAXLINE];
     int bytes_received = 0;
@@ -30,14 +28,14 @@ int process_file_transfer(int connfd) {
                 
 
                 if (fd == -1) {
-                    fprintf(stderr, "Error opening file --> %s", strerror(errno));
+                    fprintf(stderr, "Error opening file --> %s\n", strerror(errno));
                     Writen(connfd, "Error 404: File Not Found\n", strlen("Error 404: File Not Found\n"));
                     exit(EXIT_FAILURE);
                 }
 
                 // get file stats
                 if (fstat(fd, &file_stat) < 0) {
-                    fprintf(stderr, "Error fstat --> %s", strerror(errno));
+                    fprintf(stderr, "Error fstat --> %s\n", strerror(errno));
                     exit(EXIT_FAILURE);
                 }
                 fprintf(stdout, "File Size: \n%d bytes\n", file_stat.st_size);
@@ -48,7 +46,7 @@ int process_file_transfer(int connfd) {
 
                 ssize_t len = send(connfd, file_size, strlen(file_size), 0);
                 if (len < 0) {
-                    fprintf(stderr, "Error on sending greetings --> %s", strerror(errno));
+                    fprintf(stderr, "Error on sending greetings --> %s\n", strerror(errno));
                     exit(EXIT_FAILURE);
                 }
 
@@ -65,7 +63,6 @@ int process_file_transfer(int connfd) {
                 }
                 offset = 0;
                 Writen(connfd, "\n", strlen("\n"));
-                fprintf(stdout, "%s\n", "We're done here.");
 
                 close(connfd);
                 return 0;
@@ -110,10 +107,6 @@ int main(int argc, char **argv) { //why **?: array of strings
 	    
         process_file_transfer(connfd);
 
-        //str_echo(connfd); //why use this function, why overwrite it instead of standard? its used to do all the parts of the server work
-        //so this makes sense for readability plus the builting functionality of str_echo. additionally str_echo contains the protocol for
-        // information transfer 
-        fprintf(stdout, "%s\n", "PFT runs and finishes");
 	    exit(0);
 	}
 	Close(connfd);
