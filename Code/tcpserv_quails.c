@@ -17,8 +17,9 @@ int process_file_transfer(int connfd) {
 
             if(strcmp("GET",req_type)==0) {
                 fprintf(stdout,"%s","passed tests\n");
-                char FILE_TO_SEND[strlen(recvline)];
+                char FILE_TO_SEND[strlen(recvline)-4];
                 memcpy(FILE_TO_SEND,&recvline[4],strlen(recvline)-5);
+                FILE_TO_SEND[strlen(recvline)-5] = '\0';
 
 
                 int fd = open(FILE_TO_SEND, O_RDONLY);
