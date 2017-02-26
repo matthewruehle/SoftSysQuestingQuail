@@ -38,7 +38,8 @@ int process_file_transfer(int connfd) {
                 char file_size[256];
                 struct stat file_stat;
                 int sent_bytes;
-                char e404[] = "Error 404: File Not Found\n"
+                char e404[30];
+                sprintf(e404, "%s\n\0", "Error 404: File Not Found");
                 
 
                 if (fd == -1) {
