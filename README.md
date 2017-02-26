@@ -6,7 +6,7 @@ Server project for Olin College's spring 2017 class on Software Systems.
 
 This project implements a rudimentary HTTP server and client, able to transfer text files from the server to the client courtesy of GET requests. The server reads the requested file, and sends it to the client via a socket; the client then writes its own “copy” of the file. Note that the server is not secure; pretty much anything on the host machine is currently, potentially grabbable by a client.
 
-For more details, see: [INSERT FINAL REPORT LINK HERE]
+For more details, see [our website](http://softsysquestingquail.github.io)
 
 ## Authors
 
