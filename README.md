@@ -14,6 +14,7 @@ Gabriel Butterick, Bonnie Ishiguro, Matthew Ruehle, and Joseph Sutker
 
 #### Utilizes code from
 
+- _Head First C_, by David Griffiths and Dawn Griffiths
 - _UNIX Network Programming_, by William Richard Stevens
 - [_Beej's Guide to Network Programming_](http://beej.us/guide/bgnet/output/html/multipage/index.html), by Brian "Beej Jorgensen" Hall
 - [Stack Overflow](https://stackoverflow.com/questions/11952898/c-send-and-receive-file), code from user TOC
