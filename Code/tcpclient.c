@@ -2,7 +2,7 @@
  * Olin College, Software Systems (Spring 2017)
  * Requests files from server (see associated github).
  *
- * Freg Butterick, Bonnie Ishiguro, Matt Ruehle, and Joe Sutker
+ * Gabe Butterick, Bonnie Ishiguro, Mat Ruehle, and Joe Sutker
  */
 
 #include	"unp.h"
