@@ -6,7 +6,7 @@ Server project for Olin College's spring 2017 class on Software Systems.
 
 This project implements a rudimentary HTTP server and client, able to transfer text files from the server to the client courtesy of GET requests. The server reads the requested file, and sends it to the client via a socket; the client then writes its own “copy” of the file. Note that the server is not secure; pretty much anything on the host machine is currently, potentially grabbable by a client.
 
-For more details, see [our website](http://matthewruehle.github.io/SoftSysQuestingQuail)
+For more details, see [our website](http://matthewruehle.github.io/SoftSysQuestingQuail).
 
 ## Authors
 
@@ -25,3 +25,7 @@ Fork and/or clone this repository to get the code. There should be nothing else 
 ## Usage
 
 Just run `make reset` to get your executables set up, run `./tcpserv_quails` to run the server, and run `./tcpclient <Server IP Address> <Requested File>` to download the file. Easy as that!
+
+## Warning
+
+Running this code for public use is a security risk. The server's file system can be accessed via carefully worded requests. If you decide to use this code to host a public facing web server, any data on the hosting computer will be accessible to any user.
